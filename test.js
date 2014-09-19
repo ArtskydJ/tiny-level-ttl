@@ -60,6 +60,35 @@ test('delay expiration with put()', function (t) {
 	}, 2000)
 })
 
+test('still works in a sublevel', function (t) {
+	t.plan(7)
+	var db = level('hello')
+	db = sublevel(db)
+	var useDb = db.sublevel('test')
+	ttl(useDb, 1000, 50)
+
+	var puts = 0
+	useDb.on('put', function () { puts++ })
+
+	useDb.put('hi', 'wuzzup')
+	setTimeout(function () { //before ttl
+		useDb.get('hi', function (err, value) {
+			t.notOk(err, 'did not get an error')
+			t.notOk(err && err.notFound, 'did not get a notFound error')
+			t.equal(value, 'wuzzup', 'got back the expected value')
+		})
+	}, 900)
+	setTimeout(function () { //after ttl
+		useDb.get('hi', function (err, value) {
+			t.ok(err, 'got an error')
+			t.ok(err && err.notFound, 'got a notFound error')
+			t.notOk(value, 'did not get an value')
+			t.equal(puts, 1, 'one put() call')
+			t.end()
+		})
+	}, 1100)
+})
+
 test('no errors if entry is deleted', function (t) {
 	var db = level('hello')
 	db = sublevel(db)
@@ -67,5 +96,5 @@ test('no errors if entry is deleted', function (t) {
 	db.on('error', t.fail.bind(t))
 	db.put('hi', 'wuzzup', t.notOk.bind(t))
 	setTimeout(db.del.bind(db, 'hi', t.notOk.bind(t)), 200) //before ttl
-	setTimeout(t.end.bind(t), 1500) //if an error is thrown, it should show
+	setTimeout(t.end.bind(t), 1300) //if an error is thrown, it should show
 })
