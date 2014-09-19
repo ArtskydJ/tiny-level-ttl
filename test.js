@@ -71,8 +71,8 @@ test('no errors if entry is deleted', function (t) {
 
 	setTimeout(function () { //before ttl
 		db.del('hi', t.notOk.bind(t))
-	}, 500)
+	}, 200)
 	setTimeout(function () {
 		t.end()
-	}, 1100) //if an error is thrown, it should show
+	}, 1500) //if an error is thrown, it should show
 })
