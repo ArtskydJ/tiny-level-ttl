@@ -61,7 +61,7 @@ test('delay expiration with put()', function (t) {
 })
 
 test('still works in a sublevel', function (t) {
-	t.plan(7)
+	t.plan(10)
 	var db = level('hello')
 	db = sublevel(db)
 	var useDb = db.sublevel('test')
@@ -71,6 +71,7 @@ test('still works in a sublevel', function (t) {
 	useDb.on('put', function () { puts++ })
 
 	useDb.put('hi', 'wuzzup')
+	db.put('original', 'no_timeout')
 	setTimeout(function () { //before ttl
 		useDb.get('hi', function (err, value) {
 			t.notOk(err, 'did not get an error')
@@ -84,8 +85,15 @@ test('still works in a sublevel', function (t) {
 			t.ok(err && err.notFound, 'got a notFound error')
 			t.notOk(value, 'did not get an value')
 			t.equal(puts, 1, 'one put() call')
-			t.end()
+
+			db.get('original', function (err, value) {
+				t.notOk(err, 'original - did not get an error')
+				t.notOk(err && err.notFound, 'original - did not get a notFound error')
+				t.equal(value, 'no_timeout', 'original - got back the expected value')
+				t.end()
+			})
 		})
+		
 	}, 1100)
 })
 
