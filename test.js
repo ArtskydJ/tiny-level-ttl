@@ -63,16 +63,9 @@ test('delay expiration with put()', function (t) {
 test('no errors if entry is deleted', function (t) {
 	var db = level('hello')
 	db = sublevel(db)
-	ttl(db, 1000, 50)
-
+	ttl(db, 1000, 100)
 	db.on('error', t.fail.bind(t))
-
 	db.put('hi', 'wuzzup', t.notOk.bind(t))
-
-	setTimeout(function () { //before ttl
-		db.del('hi', t.notOk.bind(t))
-	}, 500)
-	setTimeout(function () {
-		t.end()
-	}, 1100) //if an error is thrown, it should show
+	setTimeout(db.del.bind(db, 'hi', t.notOk.bind(t)), 200) //before ttl
+	setTimeout(t.end.bind(t), 1500) //if an error is thrown, it should show
 })

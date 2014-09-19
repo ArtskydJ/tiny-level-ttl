@@ -33,8 +33,8 @@ var ttl = require('tiny-level-ttl')
 #ttl(db, ttl, checkInterval)
 
 - `db` is a levelup database that is sublevel ready, or a sub database.
-- `ttl` is a number of milliseconds for how long a key lives in the db.
-- `checkInterval` is a number of milliseconds for how long the interval between checking keys is.
+- `ttl` is a number of milliseconds for how long a key lives in the db. Defaults to 1 hour.
+- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Defaults to 10 seconds.
 
 #Example
 

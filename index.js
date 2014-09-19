@@ -8,9 +8,9 @@ module.exports = function ttl(db, ttl, checkInterval) {
 	}
 
 	var expirer = new Expirer(
-		ttl || 60000,
+		ttl || 3600000, //1 hour, as specified in readme.md
 		db.sublevel('expirer'),
-		checkInterval || 1000
+		checkInterval || 10000 //10 seconds, as specified in readme.md
 	)
 
 	db.on('put', function (key, value) { //I hope this is not recursive; touch() calls put() in a subDb

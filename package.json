@@ -22,6 +22,9 @@
     "url": "https://github.com/ArtskydJ/tiny-level-ttl/issues"
   },
   "homepage": "https://github.com/ArtskydJ/tiny-level-ttl",
+  "dependencies": {
+    "expire-unused-keys": "^1.0.2"
+  },
   "devDependencies": {
     "level-mem": "^0.18.0",
     "level-sublevel": "^6.3.11",
