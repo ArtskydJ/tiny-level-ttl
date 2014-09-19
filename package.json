@@ -1,0 +1,30 @@
+{
+  "name": "tiny-level-ttl",
+  "version": "0.0.1",
+  "description": "Small addon to node-level that enforces a time to live on a database (or sublevel db)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArtskydJ/tiny-level-ttl.git"
+  },
+  "keywords": [
+    "level",
+    "ttl",
+    "tiny",
+    "sublevel"
+  ],
+  "author": "ArtskydJ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ArtskydJ/tiny-level-ttl/issues"
+  },
+  "homepage": "https://github.com/ArtskydJ/tiny-level-ttl",
+  "devDependencies": {
+    "level-mem": "^0.18.0",
+    "level-sublevel": "^6.3.11",
+    "tap": "^0.4.12"
+  }
+}
