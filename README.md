@@ -6,7 +6,7 @@ tiny-level-ttl
 - [Information](#information)
 - [Install](#install)
 - [Require](#require)
-- [ttl(db, ttl, checkInterval)](#ttldb-ttl-checkinterval)
+- [ttl(db, opts)](#ttldb-opts)
 - [Example](#example)
 - [License](#license)
 
@@ -30,11 +30,12 @@ With `npm` do:
 var ttl = require('tiny-level-ttl')
 ```
 
-#ttl(db, ttl, checkInterval)
+#ttl(db, opts)
 
 - `db` is a levelup database that is sublevel ready, or a sub database.
-- `ttl` is a number of milliseconds for how long a key lives in the db. Defaults to 1 hour.
-- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Defaults to 10 seconds.
+- `opts` is an object with the following properties:
+	- `ttl` is a number of milliseconds for how long a key lives in the db. Defaults to 3600000, (1 hour).
+	- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Defaults to `10000`, (10 seconds).
 
 #Example
 
@@ -45,7 +46,7 @@ var ttl = require('./index.js')
 
 var db = level('/levelmem/does/not/care')
 db = sublevel(db) //Must run sublevel on it.
-ttl(db, 1000, 50) //1000 ms ttl, 50 ms check interval
+ttl(db, {ttl: 1000, checkInterval: 50})
 
 db.put('hi', 'wuzzup') //this sets the ttl
 
