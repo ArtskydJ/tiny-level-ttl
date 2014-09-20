@@ -1,4 +1,3 @@
-/*
 var test = require('tap').test
 var level = require('level-mem')
 var sublevel = require('level-sublevel')
@@ -34,4 +33,3 @@ test('delay expiration with get() when refreshOnGet is true', function (t) {
 		})
 	}, 2300)
 })
-*/

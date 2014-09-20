@@ -1,6 +1,6 @@
 {
   "name": "tiny-level-ttl",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Extension for node-level that enforces a time to live on a database (or sublevel db)",
   "main": "index.js",
   "scripts": {

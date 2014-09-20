@@ -34,8 +34,9 @@ var ttl = require('tiny-level-ttl')
 
 - `db` is a levelup database that is sublevel ready, or a sub database.
 - `opts` is an object with the following properties:
-	- `ttl` is a number of milliseconds for how long a key lives in the db. Defaults to 3600000, (1 hour).
+	- `ttl` is a number of milliseconds for how long a key lives in the `db`. Defaults to `3600000`, (1 hour).
 	- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Defaults to `10000`, (10 seconds).
+	- `refreshOnGet` is a boolean of whether or not the key life should be restarted when `db.get()` is called during its life. Useful for session managers. Defaults to `false`.
 
 #Example
 
