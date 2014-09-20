@@ -1,10 +1,10 @@
 {
   "name": "tiny-level-ttl",
   "version": "0.0.3",
-  "description": "Small addon to node-level that enforces a time to live on a database (or sublevel db)",
+  "description": "Extension for node-level that enforces a time to live on a database (or sublevel db)",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "tap test/*.js"
   },
   "repository": {
     "type": "git",
