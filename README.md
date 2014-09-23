@@ -16,7 +16,7 @@ Small addon to node-level that enforces a time to live (TTL).
 
 Must include a sublevel ready database. You choose between sublevel 5 and 6. This doesn't care.
 
-Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict. (Info to back this up is coming soon. Have to get the bug reproduction code from a friend.)
+Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict. [Bug reproduction test code here.](https://gist.github.com/ArtskydJ/65ebbd9cdbcdea9f091e)
 
 #Install
 
