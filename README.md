@@ -14,9 +14,9 @@ tiny-level-ttl
 
 Small addon to node-level that enforces a time to live (TTL).
 
-Differing from level-ttl, tiny-level-ttl only allows a TTL to be set when `ttl()` is called, and not on each `put()` call.
-
-Expects a sublevel ready database. You choose between sublevel 5 and 6. This doesn't care.
+- ttl is specified once when the library is initialized (unlike level-ttl where ttl must be included with each `put()` call)
+- supports sublevel 5 & 6
+- respects [level-lock](https://github.com/substack/level-lock) locks
 
 Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict.
 
