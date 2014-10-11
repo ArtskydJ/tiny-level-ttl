@@ -14,9 +14,14 @@ tiny-level-ttl
 
 Small addon to node-level that enforces a time to live (TTL).
 
-Must include a sublevel ready database. You choose between sublevel 5 and 6. This doesn't care.
+- ttl is specified once when the library is initialized (unlike level-ttl where ttl must be included with each `put()` call)
+- supports sublevel 5 & 6
+- respects [level-lock](https://github.com/substack/level-lock) locks
 
-Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict. (Info to back this up is coming soon. Have to get the bug reproduction code from a friend.)
+Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict.
+
+[Bug reproduction test code here.](https://gist.github.com/ArtskydJ/65ebbd9cdbcdea9f091e)  
+The bug was found with `level-sublevel@6.x.x` & `level-ttl@2.x.x`, and `level-sublevel@5.x.x` & `level-ttl 0.6.x`.
 
 #Install
 
@@ -32,11 +37,14 @@ var ttl = require('tiny-level-ttl')
 
 #ttl(db, opts)
 
-- `db` is a levelup database that is sublevel ready, or a sub database.
+Adds a `refreshTtl()` property to the `db`. `refreshTtl()` is a function, which, when called, will refresh the ttl on a key. This adds the ability to make the ttl act like a session manager by calling `refreshTtl()` every time you do `db.get()`.
+
+Also, this respects the locks that [`level-lock`](https://github.com/substack/level-lock) creates. If `tiny-level-ttl` attempts to delete a key, and the key's write access is locked, it will restart the key's life. (In most cases, this is the desired outcome. If the key is being written to, you would've restarted the key's life anyway. If the key is being deleted, restarting its life will not mess anything up.)
+
+- `db` is a levelup database that is sublevel ready, or a is a sub database.
 - `opts` is an object with the following properties:
 	- `ttl` is a number of milliseconds for how long a key lives in the `db`. Defaults to `3600000`, (1 hour).
 	- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Defaults to `10000`, (10 seconds).
-	- `refreshOnGet` is a boolean of whether or not the key life should be restarted when `db.get()` is called during its life. Useful for session managers. Defaults to `false`.
 
 #Example
 
