@@ -1,14 +1,13 @@
 var Expirer = require('expire-unused-keys')
 var xtend = require('xtend')
+var spaces = require('level-spaces')
 
 module.exports = function ttl(db, opts) {
 	if (!db) {
 		throw new Error('You must pass a level database to ttl()')
-	} else if (!db.sublevel) {
-		throw new Error('You must pass a level-sublevel ready database')
 	}
 	opts = xtend({ttl: 3600000, checkInterval: 10000, refreshOnGet: false}, opts)
-	var expirer = new Expirer(opts.ttl, db.sublevel('expirer'), opts.checkInterval)
+	var expirer = new Expirer(opts.ttl, spaces(db, 'expirer'), opts.checkInterval)
 	var put = db.put
 	db.put = function (key) {
 		expirer.touch(key)
