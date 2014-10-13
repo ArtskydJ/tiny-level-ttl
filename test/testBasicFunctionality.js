@@ -1,14 +1,14 @@
 var test = require('tap').test
 var level = require('level-mem')
-var sublevel = require('level-sublevel')
+var spaces = require('level-spaces')
 var ttl = require('../index.js')
 
 test('basic functionality', function (t) {
-	t.plan(6)
+	t.plan(7)
 	var db = level('hello')
-	db = sublevel(db)
-	ttl(db, {ttl: 1000, checkInterval: 50})
-	db.put('hi', 'wuzzup')
+	var ttlDb = spaces(db, 'ttl-expiration')
+	ttl(db, {ttl: 1000, checkInterval: 50, db: ttlDb})
+	db.put('hi', 'wuzzup', t.notOk.bind(t))
 	setTimeout(function () { //before ttl
 		db.get('hi', function (err, value) {
 			t.notOk(err, 'did not get an error')

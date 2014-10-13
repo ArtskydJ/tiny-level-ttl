@@ -1,18 +1,15 @@
 var test = require('tap').test
 var level = require('level-mem')
-var sublevel = require('level-sublevel')
 var ttl = require('../index.js')
 
 test('basic functionality', function (t) {
 	t.plan(12)
 	var db = level('hello')
-	db = sublevel(db)
 	ttl(db, {ttl: 1000, checkInterval: 50})
-	db.batch([{
-		type: 'put', key: 'hi', value:'wuzzup'
-	}, {
-		type: 'put', key: 'smile', value: 'you are on camera'
-	}])
+	db.batch([
+		{type: 'put', key: 'hi', value:'wuzzup'},
+		{type: 'put', key: 'smile', value: 'you are on camera'}
+	])
 	setTimeout(function () { //before ttl
 		db.get('hi', function (err, value) {
 			t.notOk(err, 'did not get an error')

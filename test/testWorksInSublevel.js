@@ -7,7 +7,12 @@ test('still works in a sublevel', function (t) {
 	var db = level('hello')
 	db = sublevel(db)
 	var useDb = db.sublevel('test')
-	ttl(useDb, {ttl: 1000, checkInterval: 50})
+	var ttlDb = db.sublevel('ttl-operations')
+	ttl(useDb, {
+		ttl: 1000,
+		db: ttlDb,
+		checkInterval: 50
+	})
 
 	var puts = 0
 	useDb.on('put', function () { puts++ })
@@ -50,7 +55,12 @@ test('works in a sublevel with the same name', function (t) {
 	db = sublevel(db)
 	var putDb = db.sublevel('test') //maybe the same as the one below?
 	var useDb = db.sublevel('test') //maybe the same as the one above?
-	ttl(useDb, {ttl: 1000, checkInterval: 50})
+	var ttlDb = db.sublevel('ttl-operations')
+	ttl(useDb, {
+		ttl: 1000,
+		db: ttlDb,
+		checkInterval: 50
+	})
 
 	var puts = 0
 	useDb.on('put', function () { puts++ })

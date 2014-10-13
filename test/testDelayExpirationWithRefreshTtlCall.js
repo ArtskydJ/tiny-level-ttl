@@ -1,11 +1,9 @@
 var test = require('tap').test
 var level = require('level-mem')
-var sublevel = require('level-sublevel')
 var ttl = require('../index.js')
 
 test('db inheritance and adding refreshTtl() to new db', function (t) {
 	var db = level('hello')
-	db = sublevel(db)
 	var doesNotReturn = ttl(db, {ttl: 1000, checkInterval: 50})
 
 	t.type(db.refreshTtl, 'function', 'database has refresh ttl function')
@@ -16,7 +14,6 @@ test('db inheritance and adding refreshTtl() to new db', function (t) {
 
 test('delay expiration with get() when refreshOnGet is true', function (t) {
 	var db = level('hello')
-	db = sublevel(db)
 	ttl(db, {ttl: 1000, checkInterval: 50})
 	db.put('hi', 'wuzzup')
 	setTimeout(function () { //delay ttl

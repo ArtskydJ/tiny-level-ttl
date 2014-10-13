@@ -1,12 +1,10 @@
 var test = require('tap').test
 var level = require('level-mem')
-var sublevel = require('level-sublevel')
 var ttl = require('../index.js')
 
 test('delay expiration with put()', function (t) {
 	t.plan(10)
 	var db = level('hello')
-	db = sublevel(db)
 	ttl(db, {ttl: 1000, checkInterval: 50})
 	db.put('hi', 'wuzzup')
 	setTimeout(function () { //delay ttl

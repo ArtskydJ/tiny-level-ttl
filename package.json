@@ -14,7 +14,9 @@
     "level",
     "ttl",
     "tiny",
-    "sublevel"
+    "sublevel",
+    "spaces",
+    "time to live"
   ],
   "author": "ArtskydJ",
   "license": "MIT",
@@ -23,10 +25,11 @@
   },
   "homepage": "https://github.com/ArtskydJ/tiny-level-ttl",
   "dependencies": {
+    "deep-equal": "^0.2.1",
     "expire-unused-keys": "^1.0.2",
-    "xtend": "^4.0.0",
-    "level-hooks": "^4.5.0",
-    "level-lock": "^1.0.1"
+    "level-lock": "^1.0.1",
+    "level-spaces": "^1.1.1",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "level-mem": "^0.18.0",
