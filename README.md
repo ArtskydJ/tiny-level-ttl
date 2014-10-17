@@ -15,7 +15,7 @@ tiny-level-ttl
 Small addon to node-level that enforces a time to live (TTL).
 
 - ttl is specified once when the library is initialized (unlike level-ttl where ttl must be included with each `put()` call)
-- supports sublevel 5 & 6, (see opts.db, under [ttl](#ttldb-opts))
+- supports [`level-sublevel`](https://github.com/dominictarr/level-sublevel) 5 & 6, but falls back on [`level-spaces`](https://github.com/rvagg/level-spaces)
 - respects [level-lock](https://github.com/substack/level-lock) locks
 
 Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict.
@@ -45,11 +45,10 @@ Also, this respects the locks that [`level-lock`](https://github.com/substack/le
 - `opts` is an object with the following properties:
 	- `ttl` is a number of milliseconds for how long a key lives in the `db`. Optional; defaults to `3600000`, (1 hour).
 	- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Optional; defaults to `10000`, (10 seconds).
-	- `db` is a database for storing the time to live data. It can be a normal levelup database, a [`level-spaces`](https://github.com/rvagg/level-spaces) database, or a [`level-sublevel`](https://github.com/dominictarr/level-sublevel) database. Optional; defaults to a new level-spaces database.
 
 #Example
 
-Automatically create level-spaces database for internal ttl operations.
+Basic use case:
 
 ```js
 var level = require('level-mem')
@@ -73,42 +72,7 @@ setTimeout(function () { //before key expires
 
 setTimeout(function () { //after key expires
 	db.get('hi', function (err, value) {
-		// `err` should be truthy
-		// `err.notFound` should be truthy
-		// `value` should be falsey
-	})
-}, 1100)
-```
-
-Create sublevel database for internal ttl operations:
-
-```js
-var level = require('level-mem')
-var sublevel = require('level-sublevel')
-var ttl = require('tiny-level-ttl')
-
-var db = level('/levelmem/does/not/care')
-db = sublevel(db) //Must run sublevel on it.
-var ttlDb = db.sublevel('ttl-whatever')
-ttl(db, {
-	ttl: 1000,
-	checkInterval: 50,
-	db: ttlDb
-})
-
-db.put('hi', 'wuzzup') //this sets the ttl
-
-setTimeout(function () { //before key expires
-	db.get('hi', function (err, value) {
-		// `err` should be falsey
-		// `err.notFound` should be falsey
-		// `value` should be 'wuzzup'
-	})
-}, 900)
-
-setTimeout(function () { //after key expires
-	db.get('hi', function (err, value) {
-		// `err` should be truthy
+		// `err` should be truthy, because the value was not found
 		// `err.notFound` should be truthy
 		// `value` should be falsey
 	})

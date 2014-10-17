@@ -1,27 +1,28 @@
-
-
 var Expirer = require('expire-unused-keys')
 var xtend = require('xtend')
 var lock = require('level-lock')
 var spaces = require('level-spaces')
-var deepEqual = require('deep-equal')
 
 function isFromThisSpace(key) {
 	return key.indexOf('ÿ') === -1
 }
 
 function onCmd(expirer, type, key) {
-	if (type && typeof type === 'object') {
-		key = type.key
-		type = type.type
+	var commandResponses = {
+		del: expirer.forget,
+		put: expirer.touch
 	}
 	if (isFromThisSpace(key)) {
-		if (type === 'del') {
-			expirer.forget(key)
-		} else if (type === 'put') {
-			expirer.touch(key)
-		}
+		commandResponses[type](key)
 	}
+}
+
+function onBatch(expirer, cmd) {
+	onCmd(expirer, cmd.type, cmd.key)
+}
+
+function makeChildDb(db) {
+	return db.sublevel ? db.sublevel('expirer') : spaces(db, 'expirer')
 }
 
 module.exports = function ttl(db, opts) {
@@ -29,17 +30,13 @@ module.exports = function ttl(db, opts) {
 		throw new Error('You must pass a level database to ttl()')
 	}
 	opts = xtend({ttl: 3600000, checkInterval: 10000}, opts)
-	if (deepEqual(db, opts.db)) {
-		opts.db = null
-	}
-	if (!opts.db) {
-		opts.db = spaces(db, 'expirer')
-	}
-	var expirer = new Expirer(opts.ttl, opts.db, opts.checkInterval)
+	var childDb = makeChildDb(db)
+	var expirer = new Expirer(opts.ttl, childDb, opts.checkInterval)
+
 	db.on('put', onCmd.bind(null, expirer, 'put'))
 	db.on('del', onCmd.bind(null, expirer, 'del'))
 	db.on('batch', function (cmds) {
-		cmds.forEach(onCmd.bind(null, expirer))
+		cmds.forEach(onBatch.bind(null, expirer))
 	})
 
 	expirer.on('expire', function (key) {
