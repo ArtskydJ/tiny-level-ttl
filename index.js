@@ -1,12 +1,13 @@
+
+
 var Expirer = require('expire-unused-keys')
 var xtend = require('xtend')
 var lock = require('level-lock')
 var spaces = require('level-spaces')
 var deepEqual = require('deep-equal')
 
-function noRecursion(key) {
-	var sublevels = key.split(/ÿ+/).slice(-3,-1) //take last two sub levels (do not include the key name)
-	return (sublevels[0] !== sublevels[1] || typeof sublevels[0] === "undefined") //make sure they differ
+function isFromThisSpace(key) {
+	return key.indexOf('ÿ') === -1
 }
 
 function onCmd(expirer, type, key) {
@@ -14,7 +15,7 @@ function onCmd(expirer, type, key) {
 		key = type.key
 		type = type.type
 	}
-	if (noRecursion(key)) {
+	if (isFromThisSpace(key)) {
 		if (type === 'del') {
 			expirer.forget(key)
 		} else if (type === 'put') {
