@@ -1,6 +1,6 @@
 {
   "name": "tiny-level-ttl",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Extension for node-level that enforces a time to live on a database (or sublevel db)",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/ArtskydJ/tiny-level-ttl",
   "dependencies": {
-    "deep-equal": "^0.2.1",
     "expire-unused-keys": "^1.0.2",
     "level-lock": "^1.0.1",
     "level-spaces": "^1.1.1",
