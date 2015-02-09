@@ -3,14 +3,7 @@ tiny-level-ttl
 
 [![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
 
-- [Information](#information)
-- [Install](#install)
-- [Require](#require)
-- [ttl(db, opts)](#ttldb-opts)
-- [Example](#example)
-- [License](#license)
-
-#Information
+# information
 
 Small addon to node-level that enforces a time to live (TTL).
 
@@ -23,19 +16,13 @@ Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-t
 [Bug reproduction test code here.](https://gist.github.com/ArtskydJ/65ebbd9cdbcdea9f091e)  
 The bug was found with `level-sublevel@6.x.x` & `level-ttl@2.x.x`, and `level-sublevel@5.x.x` & `level-ttl 0.6.x`.
 
-#Install
-
-With `npm` do:
-	
-	npm install tiny-level-ttl
-
-#Require
+# api
 
 ```js
 var ttl = require('tiny-level-ttl')
 ```
 
-#ttl(db, opts)
+# `ttl(db, opts)`
 
 Adds a `refreshTtl()` property to the `db`. `refreshTtl()` is a function, which, when called, will refresh the ttl on a key. This adds the ability to make the ttl act like a session manager by calling `refreshTtl()` every time you do `db.get()`.
 
@@ -46,9 +33,9 @@ Also, this respects the locks that [`level-lock`](https://github.com/substack/le
 	- `ttl` is a number of milliseconds for how long a key lives in the `db`. Optional; defaults to `3600000`, (1 hour).
 	- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Optional; defaults to `10000`, (10 seconds).
 
-#Example
+# example
 
-Basic use case:
+Basic usage:
 
 ```js
 var level = require('level-mem')
@@ -64,21 +51,27 @@ db.put('hi', 'wuzzup') //this sets the ttl
 
 setTimeout(function () { //before key expires
 	db.get('hi', function (err, value) {
-		// `err` should be falsey
-		// `err.notFound` should be falsey
-		// `value` should be 'wuzzup'
+		console.log(err && err.notFound) // -> null
+		console.log(value) // -> 'wazzup'
 	})
 }, 900)
 
 setTimeout(function () { //after key expires
 	db.get('hi', function (err, value) {
-		// `err` should be truthy, because the value was not found
-		// `err.notFound` should be truthy
-		// `value` should be falsey
+		console.log(err && err.notFound) // -> true
+		console.log(value) // -> undefined
 	})
 }, 1100)
 ```
 
-#License
+# install
 
-[MIT](http://opensource.org/licenses/MIT)
+With [`npm`](http://nodejs.org/download) do:
+
+```
+npm install tiny-level-ttl
+```
+
+# license
+
+[VOL](http://veryopenlicense.com/)
