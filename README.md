@@ -64,7 +64,7 @@ setTimeout(function () { //after key expires
 
 # install
 
-With [`npm`](http://nodejs.org/download) do:
+With [npm](http://nodejs.org/download) do:
 
 ```
 npm install tiny-level-ttl
