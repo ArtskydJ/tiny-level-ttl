@@ -3,8 +3,6 @@ tiny-level-ttl
 
 [![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
 
-# information
-
 Small addon to node-level that enforces a time to live (TTL).
 
 - ttl is specified once when the library is initialized (unlike level-ttl where ttl must be included with each `put()` call)
