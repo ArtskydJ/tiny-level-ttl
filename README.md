@@ -3,16 +3,16 @@ tiny-level-ttl
 
 [![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
 
-Small addon to node-level that enforces a time to live (TTL).
+Enforces a [time to live (TTL)][wiki-ttl] on a [`levelup`][levelup] database.
 
-- ttl is specified once when the library is initialized (unlike level-ttl where ttl must be included with each `put()` call)
-- supports [`level-sublevel`](https://github.com/dominictarr/level-sublevel) 5 & 6, but falls back on [`level-spaces`](https://github.com/rvagg/level-spaces)
-- respects [level-lock](https://github.com/substack/level-lock) locks
+- The ttl is specified once when the library is initialized. (Unlike `level-ttl` where ttl must be included with each `put()` call.)
+- Supports [`level-sublevel`][sublevel] 5 & 6, and [`level-spaces`][spaces] 1 & 2. (Defaults to `level-spaces@2`.)
+- Respects [`level-lock`][lock] locks.
 
-Why use this instead of [`node-level-ttl`](https://github.com/rvagg/node-level-ttl)? Because [`level-sublevel`](https://github.com/dominictarr/level-sublevel) and [`node-level-ttl`](https://github.com/rvagg/node-level-ttl) conflict.
+Why use this instead of [`node-level-ttl`][ttl]? Because [`level-sublevel`][sublevel] and [`node-level-ttl`][ttl] conflict.
 
-[Bug reproduction test code here.](https://gist.github.com/ArtskydJ/65ebbd9cdbcdea9f091e)  
-The bug was found with `level-sublevel@6.x.x` & `level-ttl@2.x.x`, and `level-sublevel@5.x.x` & `level-ttl 0.6.x`.
+[Bug reproduction test code here.][bug-code]  
+The bug was found using `level-sublevel@6` with `level-ttl@2`, and `level-sublevel@5` with `level-ttl 0.6`.
 
 # api
 
@@ -24,7 +24,7 @@ var ttl = require('tiny-level-ttl')
 
 Adds a `refreshTtl` method to the `db`. When `db.refreshTtl(key)` is called, it will refresh the ttl on the `key`. This adds the ability to make the ttl act like a session manager by calling `refreshTtl()` every time you do `db.get()`.
 
-Also, this respects the locks that [`level-lock`](https://github.com/substack/level-lock) creates. If `tiny-level-ttl` attempts to delete a key, and the key's write access is locked, it will restart the key's life. (In most cases, this is the desired outcome. If the key is being written to, you would've restarted the key's life anyway. If the key is being deleted, restarting its life will not mess anything up.)
+Also, this respects the locks that [`level-lock`][lock] creates. If `tiny-level-ttl` attempts to delete a key, and the key's write access is locked, it will restart the key's life. (In most cases, this is the desired outcome. If the key is being written to, you would've restarted the key's life anyway. If the key is being deleted, restarting its life will not mess anything up.)
 
 - `db` is a levelup database.
 - `opts` is an object with the following properties:
@@ -73,3 +73,12 @@ npm install tiny-level-ttl
 # license
 
 [VOL](http://veryopenlicense.com/)
+
+
+[bug-code]: https://gist.github.com/ArtskydJ/65ebbd9cdbcdea9f091e
+[levelup]: https://github.com/rvagg/node-levelup
+[lock]: https://github.com/substack/level-lock
+[spaces]: https://github.com/rvagg/level-spaces
+[sublevel]: https://github.com/dominictarr/level-sublevel
+[ttl]: https://github.com/rvagg/node-level-ttl
+[wiki-ttl]:https://en.wikipedia.org/wiki/Time_to_live
