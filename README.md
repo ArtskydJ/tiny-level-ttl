@@ -20,9 +20,9 @@ The bug was found with `level-sublevel@6.x.x` & `level-ttl@2.x.x`, and `level-su
 var ttl = require('tiny-level-ttl')
 ```
 
-# `ttl(db, opts)`
+# `ttl(db[, opts])`
 
-Adds a `refreshTtl()` property to the `db`. `refreshTtl()` is a function, which, when called, will refresh the ttl on a key. This adds the ability to make the ttl act like a session manager by calling `refreshTtl()` every time you do `db.get()`.
+Adds a `refreshTtl` method to the `db`. When `db.refreshTtl(key)` is called, it will refresh the ttl on the `key`. This adds the ability to make the ttl act like a session manager by calling `refreshTtl()` every time you do `db.get()`.
 
 Also, this respects the locks that [`level-lock`](https://github.com/substack/level-lock) creates. If `tiny-level-ttl` attempts to delete a key, and the key's write access is locked, it will restart the key's life. (In most cases, this is the desired outcome. If the key is being written to, you would've restarted the key's life anyway. If the key is being deleted, restarting its life will not mess anything up.)
 
