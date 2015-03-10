@@ -6,8 +6,8 @@ test('db inheritance and adding refreshTtl() to new db', function (t) {
 	var db = level('hello')
 	var doesNotReturn = ttl(db, {ttl: 1000, checkInterval: 50})
 
-	t.type(db.refreshTtl, 'function', 'database has refresh ttl function')
-	t.type(doesNotReturn, 'undefined', 'ttl() returns nothing!')
+	t.equal(typeof db.refreshTtl, 'function', 'database has refresh ttl function')
+	t.equal(typeof doesNotReturn, 'undefined', 'ttl() returns nothing!')
 
 	t.end()
 })

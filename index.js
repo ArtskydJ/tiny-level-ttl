@@ -4,29 +4,33 @@ var lock = require('level-lock')
 var spaces = require('level-spaces')
 var defaultOpts = {
 	ttl: 3600000,
-	checkInterval: 10000
+	checkInterval: 10000,
+	separator: [ '~', '\xff', '\x00' ]
 }
 
-// https://github.com/rvagg/level-spaces/issues/2
-function isFromThisSpace(key) {
-	function lacks(char) {
-		return (key.indexOf(char) === -1)
+function isFromThisSpace(key, separator) {
+	if (!Array.isArray(separator)) {
+		separator = [ separator ]
 	}
-	return ( lacks('ÿ') && lacks('~') && lacks('\xff') && lacks('\x00') )
+	return separator.every(function (sep) {
+		return key.indexOf(sep) === -1
+	})
 }
 
-function onCmd(expirer, type, key) {
+function onCmd(expirer, separator, type, key) {
 	var commandResponses = {
 		del: expirer.forget,
 		put: expirer.touch
 	}
-	if (isFromThisSpace(key)) {
+	if (isFromThisSpace(key, separator)) {
 		commandResponses[type](key)
 	}
 }
 
-function makeChildDb(db) {
-	return db.sublevel ? db.sublevel('expirer') : spaces(db, 'expirer')
+function makeChildDb(db, separator) {
+	return db.sublevel ?
+		db.sublevel('expirer') :
+		spaces(db, 'expirer', { separator: separator })
 }
 
 module.exports = function ttl(db, opts) {
@@ -34,14 +38,15 @@ module.exports = function ttl(db, opts) {
 		throw new Error('You must pass a level database to ttl()')
 	}
 	var options = xtend(defaultOpts, opts)
-	var childDb = makeChildDb(db)
+	var separator = options.separator
+	var childDb = makeChildDb(db, separator)
 	var expirer = new Expirer(options.ttl, childDb, options.checkInterval)
 
-	db.on('put', onCmd.bind(null, expirer, 'put'))
-	db.on('del', onCmd.bind(null, expirer, 'del'))
+	db.on('put', onCmd.bind(null, expirer, separator, 'put'))
+	db.on('del', onCmd.bind(null, expirer, separator, 'del'))
 	db.on('batch', function (cmds) {
 		cmds.forEach(function (cmd) {
-			onCmd(expirer, cmd.type, cmd.key)
+			onCmd(expirer, separator, cmd.type, cmd.key)
 		})
 	})
 

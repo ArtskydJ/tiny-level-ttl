@@ -44,6 +44,6 @@ test('still works in a sublevel', function (t) {
 				t.end()
 			})
 		})
-		
+
 	}, 1100)
 })

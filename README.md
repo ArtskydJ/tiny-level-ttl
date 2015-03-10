@@ -30,6 +30,7 @@ Also, this respects the locks that [`level-lock`][lock] creates. If `tiny-level-
 - `opts` is an object with the following properties:
 	- `ttl` is a number of milliseconds for how long a key lives in the `db`. Optional; defaults to `3600000`, (1 hour).
 	- `checkInterval` is a number of milliseconds for how long the interval between checking keys is. Optional; defaults to `10000`, (10 seconds).
+	- `separator` can be a string, buffer, or array of strings/buffers. These represent the separator used in the sub-database. For example, `level-spaces` by default has the separator `~`, so if you store the key `bar`, in the space `foo`, the key will be `~foo~bar`. Defaults to `[ '~', '\xff', '\x00' ]`.
 
 # example
 

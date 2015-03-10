@@ -7,7 +7,7 @@ test('basic functionality', function (t) {
 	t.plan(7)
 	var db = level('hello')
 	var ttlDb = spaces(db, 'ttl-expiration')
-	ttl(db, {ttl: 1000, checkInterval: 50, db: ttlDb})
+	ttl(db, {ttl: 1000, checkInterval: 50})
 	db.put('hi', 'wuzzup', t.notOk.bind(t))
 	setTimeout(function () { //before ttl
 		db.get('hi', function (err, value) {

@@ -1,7 +1,12 @@
+# 3.1.0
+
+- Added `separator` option.
+
 # 3.0.0
 
 - Added support for `level-spaces@2`
 - The check for whether a key is in a sub level is more thorough.
+- Breaking changes: Keys with '\x00', '\xff', or '~' in their name are not supported.
 
 # 2.0.3
 
@@ -18,6 +23,7 @@
 # 2.0.0
 
 - Added support for `level-spaces@1`.
+- Breaking changes: none.
 
 # 1.1.0
 
