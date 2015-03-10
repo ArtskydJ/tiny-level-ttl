@@ -6,7 +6,7 @@
 
 - Added support for `level-spaces@2`
 - The check for whether a key is in a sub level is more thorough.
-- Breaking changes: Keys with '\x00', '\xff', or '~' in their name are not supported.
+- Breaking changes: Keys with `'\x00'`, `'\xff'`, or `'~'` in their name are not supported. (In 3.1.0+, they are supported by passing in a `separator` that overrides the defaults.)
 
 # 2.0.3
 
