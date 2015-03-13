@@ -3,10 +3,10 @@ tiny-level-ttl
 
 [![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
 
-Enforces a [time to live (TTL)][wiki-ttl] on a [`levelup`][levelup] database.
+Enforces a [time to live (TTL)][wiki-ttl] on a [`node-levelup`][levelup] database.
 
-- The ttl is specified once when the library is initialized. (Unlike `level-ttl` where ttl must be included with each `put()` call.)
-- Supports [`level-sublevel`][sublevel] 5 & 6, and [`level-spaces`][spaces] 1 & 2. (Defaults to `level-spaces@2`.)
+- The ttl is specified in the constructor. (In [`node-level-ttl`][ttl] you can set the ttl in the constructor, and/or in a `db.put()` call.)
+- Supports [`level-sublevel`][sublevel] 5 & 6, and [`level-spaces`][spaces] 1 & 2. (Defaults to [`level-spaces@2`][spaces].)
 - Respects [`level-lock`][lock] locks.
 
 Why use this instead of [`node-level-ttl`][ttl]? Because [`level-sublevel`][sublevel] and [`node-level-ttl`][ttl] conflict.
