@@ -7,7 +7,10 @@ test('basic functionality', function (t) {
 	t.plan(7)
 	var db = level('hello')
 	var ttlDb = spaces(db, 'ttl-expiration')
-	ttl(db, {ttl: 1000, checkInterval: 50})
+	ttl(db, {
+		ttl: 100,
+		checkInterval: 20
+	})
 	db.put('hi', 'wuzzup', t.notOk.bind(t))
 	setTimeout(function () { //before ttl
 		db.get('hi', function (err, value) {
@@ -15,7 +18,7 @@ test('basic functionality', function (t) {
 			t.notOk(err && err.notFound, 'did not get a notFound error')
 			t.equal(value, 'wuzzup', 'got back the expected value')
 		})
-	}, 900)
+	}, 70)
 	setTimeout(function () { //after ttl
 		db.get('hi', function (err, value) {
 			t.ok(err, 'got an error')
@@ -23,5 +26,5 @@ test('basic functionality', function (t) {
 			t.notOk(value, 'did not get a value')
 			t.end()
 		})
-	}, 1100)
+	}, 130)
 })

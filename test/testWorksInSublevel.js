@@ -8,8 +8,8 @@ test('still works in a sublevel', function (t) {
 	db = sublevel(db)
 	var useDb = db.sublevel('test')
 	ttl(useDb, {
-		ttl: 1000,
-		checkInterval: 50
+		ttl: 100,
+		checkInterval: 20
 	})
 
 	var puts = 0
@@ -29,7 +29,7 @@ test('still works in a sublevel', function (t) {
 				t.equal(value, 'no_timeout', 'original - got back the expected value')
 			})
 		})
-	}, 900)
+	}, 70)
 	setTimeout(function () { //after ttl
 		useDb.get('hi', function (err, value) { //does not have value in sub db
 			t.ok(err, 'got an error')
@@ -45,5 +45,5 @@ test('still works in a sublevel', function (t) {
 			})
 		})
 
-	}, 1100)
+	}, 130)
 })

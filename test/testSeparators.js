@@ -10,8 +10,8 @@ test('separators work', function (t) {
 	var ttlDb = spaces(db, 'ttl-expiration', { separator: '\xff' })
 
 	ttl(db, {
-		ttl: 1000,
-		checkInterval: 50,
+		ttl: 100,
+		checkInterval: 20,
 		separator: '\xff'
 	})
 
@@ -30,7 +30,7 @@ test('separators work', function (t) {
 				t.equal(value, 'coolness', 'got back the expected value')
 			})
 		})
-	}, 900)
+	}, 70)
 
 	setTimeout(function () { //after ttl
 		db.get('hi\x00', function (err, value) {
@@ -46,7 +46,7 @@ test('separators work', function (t) {
 				t.end()
 			})
 		})
-	}, 1100)
+	}, 130)
 })
 
 test('separators work', function (t) {
@@ -56,8 +56,8 @@ test('separators work', function (t) {
 	var ttlDb = spaces(db, 'ttl-expiration', { separator: 'x' })
 
 	ttl(db, {
-		ttl: 1000,
-		checkInterval: 50,
+		ttl: 100,
+		checkInterval: 20,
 		separator: 'x'
 	})
 
@@ -71,7 +71,7 @@ test('separators work', function (t) {
 		db.get('hellox', function (err, value) {
 			t.equal(value, 'coolness')
 		})
-	}, 900)
+	}, 70)
 
 	setTimeout(function () { //after ttl
 		db.get('hi\x00', function (err, value) {
@@ -82,5 +82,5 @@ test('separators work', function (t) {
 				t.end()
 			})
 		})
-	}, 1100)
+	}, 130)
 })
