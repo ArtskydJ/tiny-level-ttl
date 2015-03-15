@@ -17,14 +17,24 @@ function isFromThisSpace(key, separator) {
 	})
 }
 
-function onCmd(expirer, separator, type, key) {
-	var commandResponses = {
-		del: expirer.forget,
-		put: expirer.touch
+function createResponses(expirer, separator) {
+	var responses = {}
+	responses.del = function(key) {
+		if (isFromThisSpace(key, separator)) {
+			expirer.forget(key)
+		}
 	}
-	if (isFromThisSpace(key, separator)) {
-		commandResponses[type](key)
+	responses.put = function(key) {
+		if (isFromThisSpace(key, separator)) {
+			expirer.touch(key)
+		}
 	}
+	responses.batch = function(cmds) {
+		cmds.forEach(function(cmd) {
+			responses[cmd.type](cmd.key)
+		})
+	}
+	return responses
 }
 
 function makeChildDb(db, separator) {
@@ -41,14 +51,12 @@ module.exports = function ttl(db, opts) {
 	var separator = options.separator
 	var childDb = makeChildDb(db, separator)
 	var expirer = new Expirer(options.ttl, childDb, options.checkInterval)
+	var responses = createResponses(expirer, separator)
 
-	db.on('put', onCmd.bind(null, expirer, separator, 'put'))
-	db.on('del', onCmd.bind(null, expirer, separator, 'del'))
-	db.on('batch', function (cmds) {
-		cmds.forEach(function (cmd) {
-			onCmd(expirer, separator, cmd.type, cmd.key)
-		})
-	})
+	db.on('put', responses.put)
+	db.on('del', responses.del)
+	db.on('batch', responses.batch)
+	db.once('closing', shutdown)
 
 	expirer.on('expire', function (key) {
 		var unlock = lock(db, key, 'w')
@@ -59,4 +67,12 @@ module.exports = function ttl(db, opts) {
 		}
 	})
 	db.refreshTtl = expirer.touch
+
+	function shutdown() {
+		delete db.refreshTtl
+		db.removeListener('put', responses.put)
+		db.removeListener('del', responses.del)
+		db.removeListener('batch', responses.batch)
+		expirer.stop()
+	}
 }
