@@ -1,3 +1,8 @@
+# 3.1.1
+
+- Shut down nicely when the database closes.
+- Sped up tests.
+
 # 3.1.0
 
 - Added `separator` option.
