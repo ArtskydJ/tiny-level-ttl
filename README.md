@@ -2,6 +2,8 @@ tiny-level-ttl
 ==============
 
 [![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
+[![Dependency Status](https://david-dm.org/artskydj/tiny-level-ttl.svg)](https://david-dm.org/artskydj/tiny-level-ttl)
+[![devDependency Status](https://david-dm.org/artskydj/tiny-level-ttl/dev-status.svg)](https://david-dm.org/artskydj/tiny-level-ttl#info=devDependencies)
 
 Enforces a [time to live (TTL)][wiki-ttl] on a [`node-levelup`][levelup] database.
 
