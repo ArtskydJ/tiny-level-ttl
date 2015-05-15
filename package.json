@@ -33,6 +33,6 @@
   "devDependencies": {
     "level-mem": "^0.18.0",
     "level-sublevel": "^6.3.11",
-    "tap": "^0.7.1"
+    "tap": "^1.0.4"
   }
 }
