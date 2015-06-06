@@ -1,6 +1,10 @@
+# 3.1.2
+
+- Added test for buffer separators (Fixes [#5](https://github.com/ArtskydJ/tiny-level-ttl/issues/5).)
+
 # 3.1.1
 
-- Shut down nicely when the database closes.
+- TTL shuts down nicely when the database closes.
 - Sped up tests.
 
 # 3.1.0
