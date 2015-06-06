@@ -3,7 +3,7 @@ var level = require('level-mem')
 var spaces = require('level-spaces')
 var ttl = require('../index.js')
 
-test('separators work', function (t) {
+test('separators work 1', function (t) {
 	t.plan(14)
 
 	var db = level('hello')
@@ -49,7 +49,7 @@ test('separators work', function (t) {
 	}, 130)
 })
 
-test('separators work', function (t) {
+test('separators work 2', function (t) {
 	t.plan(6)
 
 	var db = level('hello')
@@ -77,6 +77,42 @@ test('separators work', function (t) {
 		db.get('hi\x00', function (err, value) {
 			t.notOk(value)
 			db.get('hellox', function (err, value) {
+				t.equal(value, 'coolness')
+
+				t.end()
+			})
+		})
+	}, 130)
+})
+
+test('separators work buffers', function (t) {
+	t.plan(6)
+
+	var db = level('hello')
+	var ttlDb = spaces(db, 'ttl-expiration', { separator: new Buffer('99') })
+
+	ttl(db, {
+		ttl: 100,
+		checkInterval: 20,
+		separator: new Buffer('99')
+	})
+
+	db.put('hi', 'wuzzup', t.notOk.bind(t))
+	db.put('hello99', 'coolness', t.notOk.bind(t))
+
+	setTimeout(function () { //before ttl
+		db.get('hi', function (err, value) {
+			t.equal(value, 'wuzzup')
+		})
+		db.get('hello99', function (err, value) {
+			t.equal(value, 'coolness')
+		})
+	}, 70)
+
+	setTimeout(function () { //after ttl
+		db.get('hi', function (err, value) {
+			t.notOk(value)
+			db.get('hello99', function (err, value) {
 				t.equal(value, 'coolness')
 
 				t.end()
