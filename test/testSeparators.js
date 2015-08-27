@@ -18,7 +18,7 @@ test('separators work 1', function (t) {
 	db.put('hi\x00', 'wuzzup', t.notOk.bind(t))
 	db.put('hello\xff', 'coolness', t.notOk.bind(t))
 
-	setTimeout(function () { //before ttl
+	setTimeout(function () { // before ttl
 		db.get('hi\x00', function (err, value) {
 			t.notOk(err, 'did not get an error')
 			t.notOk(err && err.notFound, 'did not get a notFound error')
@@ -32,7 +32,7 @@ test('separators work 1', function (t) {
 		})
 	}, 70)
 
-	setTimeout(function () { //after ttl
+	setTimeout(function () { // after ttl
 		db.get('hi\x00', function (err, value) {
 			t.ok(err, 'got an error')
 			t.ok(err && err.notFound, 'got a notFound error')
@@ -64,7 +64,7 @@ test('separators work 2', function (t) {
 	db.put('hi', 'wuzzup', t.notOk.bind(t))
 	db.put('hellox', 'coolness', t.notOk.bind(t))
 
-	setTimeout(function () { //before ttl
+	setTimeout(function () { // before ttl
 		db.get('hi', function (err, value) {
 			t.equal(value, 'wuzzup')
 		})
@@ -73,7 +73,7 @@ test('separators work 2', function (t) {
 		})
 	}, 70)
 
-	setTimeout(function () { //after ttl
+	setTimeout(function () { // after ttl
 		db.get('hi\x00', function (err, value) {
 			t.notOk(value)
 			db.get('hellox', function (err, value) {
@@ -100,7 +100,7 @@ test('separators work buffers', function (t) {
 	db.put('hi', 'wuzzup', t.notOk.bind(t))
 	db.put('hello99', 'coolness', t.notOk.bind(t))
 
-	setTimeout(function () { //before ttl
+	setTimeout(function () { // before ttl
 		db.get('hi', function (err, value) {
 			t.equal(value, 'wuzzup')
 		})
@@ -109,7 +109,43 @@ test('separators work buffers', function (t) {
 		})
 	}, 70)
 
-	setTimeout(function () { //after ttl
+	setTimeout(function () { // after ttl
+		db.get('hi', function (err, value) {
+			t.notOk(value)
+			db.get('hello99', function (err, value) {
+				t.equal(value, 'coolness')
+
+				t.end()
+			})
+		})
+	}, 130)
+})
+
+test('buffer array as separators', function (t) {
+	t.plan(6)
+
+	var db = level('hello')
+	var ttlDb = spaces(db, 'ttl-expiration', { separator: new Buffer('99') })
+
+	ttl(db, {
+		ttl: 100,
+		checkInterval: 20,
+		separator: [ new Buffer('88'), new Buffer('99') ]
+	})
+
+	db.put('hi', 'wuzzup', t.notOk.bind(t))
+	db.put('hello99', 'coolness', t.notOk.bind(t))
+
+	setTimeout(function () { // before ttl
+		db.get('hi', function (err, value) {
+			t.equal(value, 'wuzzup')
+		})
+		db.get('hello99', function (err, value) {
+			t.equal(value, 'coolness')
+		})
+	}, 70)
+
+	setTimeout(function () { // after ttl
 		db.get('hi', function (err, value) {
 			t.notOk(value)
 			db.get('hello99', function (err, value) {
