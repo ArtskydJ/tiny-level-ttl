@@ -16,5 +16,5 @@ test('closes handlers on closing event', function (t) {
 	setTimeout(function () {
 		process.removeListener('uncaughtException', fail)
 		t.end()
-	}, 100)
+	}, 20)
 })
