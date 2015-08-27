@@ -1,4 +1,4 @@
-var test = require('tap').test
+var test = require('tape')
 var level = require('level-mem')
 var sublevel = require('level-sublevel')
 var ttl = require('../index.js')

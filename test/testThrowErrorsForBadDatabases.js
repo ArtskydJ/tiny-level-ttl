@@ -1,4 +1,4 @@
-var test = require('tap').test
+var test = require('tape')
 var ttl = require('../index.js')
 
 test('throw error on bad db', function (t) {
