@@ -1,3 +1,7 @@
+# 3.1.5
+
+- Fixed tests after `expire-unused-keys` update.
+
 # 3.1.4
 
 - Bumped up the timeout on a test, because it was failing.
