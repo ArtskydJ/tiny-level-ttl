@@ -1,16 +1,20 @@
 var test = require('tape')
-var EventEmitter = require('events').EventEmitter
+var level = require('level-mem')
 var ttl = require('../index.js')
 
 test('closes handlers on closing event', function (t) {
-	t.plan(2)
-	var db = new EventEmitter()
-	db.sublevel = function () {}
+	var db = new level()
+	db.sublevel = level
 	ttl(db)
+
+	t.equal(typeof db.refreshTtl, 'function', 'not shutdown yet')
+	db.emit('closing')
+	t.equal(typeof db.refreshTtl, 'undefined', 'is shutdown')
+
+	var fail = t.fail.bind(t, 'uncaught exception')
+	process.on('uncaughtException', fail)
 	setTimeout(function () {
-		t.equal(typeof db.refreshTtl, 'function', 'not shutdown yet')
-		db.emit('closing') // Emitters are synchronous
-		t.equal(typeof db.refreshTtl, 'undefined', 'is shutdown')
+		process.removeListener('uncaughtException', fail)
 		t.end()
-	}, 5)
+	}, 100)
 })
