@@ -1,10 +1,14 @@
+# 3.1.4
+
+- Bumped up the timeout on a test, because it was failing.
+
 # 3.1.3
 
-- Added test for an array of buffer separators (Fixes [#5](https://github.com/ArtskydJ/tiny-level-ttl/issues/5).)
+- Added test for an array of buffer separators. (Fixes [#5](https://github.com/ArtskydJ/tiny-level-ttl/issues/5).)
 
 # 3.1.2
 
-- Added test for buffer separators (Fixes [#5](https://github.com/ArtskydJ/tiny-level-ttl/issues/5).)
+- Added test for buffer separators. (Fixes [#5](https://github.com/ArtskydJ/tiny-level-ttl/issues/5).)
 
 # 3.1.1
 
