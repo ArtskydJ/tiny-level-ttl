@@ -1,11 +1,9 @@
 tiny-level-ttl
 ==============
 
-[![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
-[![Dependency Status](https://david-dm.org/artskydj/tiny-level-ttl.svg)](https://david-dm.org/artskydj/tiny-level-ttl)
-[![devDependency Status](https://david-dm.org/artskydj/tiny-level-ttl/dev-status.svg)](https://david-dm.org/artskydj/tiny-level-ttl#info=devDependencies)
+> A tiny javascript module that enforces a [time to live (TTL)][wiki-ttl] on a [`node-levelup`][levelup] database.
 
-Enforces a [time to live (TTL)][wiki-ttl] on a [`node-levelup`][levelup] database.
+[![Build Status](https://travis-ci.org/ArtskydJ/tiny-level-ttl.svg?branch=master)](https://travis-ci.org/ArtskydJ/tiny-level-ttl)
 
 - The ttl is specified in the constructor. (In [`node-level-ttl`][ttl] you can set the ttl in the constructor, and/or in a `db.put()` call.)
 - Supports [`level-sublevel`][sublevel] 5 & 6, and [`level-spaces`][spaces] 1 & 2. (Defaults to [`level-spaces@2`][spaces].)
@@ -69,9 +67,7 @@ setTimeout(function () { //after key expires
 
 With [npm](http://nodejs.org/download) do:
 
-```
-npm install tiny-level-ttl
-```
+    npm install tiny-level-ttl
 
 # license
 
